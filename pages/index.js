@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar'
 import Widgets from "../components/Widgets"
 
 
-export default function Home() {
+export default function Home({newsResults}) {
   return (
     <div >
       <Head>
@@ -18,9 +18,19 @@ export default function Home() {
       {/* feed */}
       <Feed/>
       {/* widgets */}
-      <Widgets/>
+      <Widgets newsResults={newsResults.articles}/>
       {/* models */}
       </main>
     </div>
   )
+}
+
+export async function getServerSideProps(){
+  const newsResults = await fetch ("https://saurav.tech/NewsAPI/top-headlines/category/business/in.json"
+  ).then((res)=>res.json());
+  return{
+    props:{
+      newsResults,
+    }
+  }
 }
