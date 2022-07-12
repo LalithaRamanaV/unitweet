@@ -1,6 +1,5 @@
 import {getProviders,signIn} from "next-auth/react";
 import { GoogleAuthProvider } from "firebase/auth";
-
 import unitweet from '../../public/images/unitweet.png'
 import Image from 'next/image'
 
