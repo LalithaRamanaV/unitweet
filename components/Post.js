@@ -12,7 +12,9 @@ import {useRecoilState} from "recoil";
 function Post({post,id}) {
   const {data:session} = useSession();
   const [likes,setLikes] = useState([]);
+  const [comments,setComments] = useState([]);
   const [hasLiked,setHasLiked] = useState(false);
+  const [hasCommented,setHasCommented] = useState(false);
   const [open,setOpen] = useRecoilState(modalState);
   const [postId,setPostId] = useRecoilState(postIdState);
 
@@ -23,9 +25,18 @@ function Post({post,id}) {
     );
   }, [db]);
 
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "posts",post.id,"comments"),
+      (snapshot) => setComments(snapshot.docs)
+    );
+  }, [db]);
+
   useEffect(()=>{
    setHasLiked(likes.findIndex((like) => like.id === session?.user.uid) !== -1);
   }, [likes])
+
+  
 
   async function likePost(){
     if(session){
@@ -40,6 +51,9 @@ function Post({post,id}) {
       signIn()
     }
   }
+
+  
+
 
   async function deletePost() {
     if(window.confirm("Are you sure you want to delete the post?")){
@@ -82,15 +96,31 @@ function Post({post,id}) {
           {/* icons */}
 
           <div className="flex justify-between text-gray-500 p-2">
-            <ChatIcon onClick={()=>{
+            <div className="flex items-center select-none">
+            <ChatIcon 
+            onClick={(commentPost)=>{
               if(!session){
                 signIn();
               }else{
                 setPostId(post.id)
                 setOpen(!open);
               }
-            } } 
-            className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"/>
+              }} 
+              className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"/>
+              
+              {comments.length > 0 && (
+                  <span className="text-sm">
+                    {comments.length}
+                    </span>
+                )
+               }
+              
+              </div>
+          
+             
+            
+
+           
             {session?.user.uid === post?.data()?.id && (
             <TrashIcon onClick={deletePost}className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"/>
             )}
