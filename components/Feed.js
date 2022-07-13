@@ -30,7 +30,7 @@ function Feed() {
     <AnimatePresence>
     {posts.map((post)=> (
       <motion.div key={post.id} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:1}}>
-       <Post key={post.id} post={post}/>
+       <Post key={post.id} id={post.id}post={post}/>
       </motion.div>
     ))}
     </AnimatePresence>

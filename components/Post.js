@@ -8,26 +8,27 @@ import {signIn, useSession} from "next-auth/react";
 import { deleteObject, ref } from 'firebase/storage';
 import { modalState, postIdState } from '../atom/modalAtom';
 import {useRecoilState} from "recoil";
+import {useRouter} from "next/router";
 
 function Post({post,id}) {
   const {data:session} = useSession();
   const [likes,setLikes] = useState([]);
   const [comments,setComments] = useState([]);
   const [hasLiked,setHasLiked] = useState(false);
-  const [hasCommented,setHasCommented] = useState(false);
   const [open,setOpen] = useRecoilState(modalState);
   const [postId,setPostId] = useRecoilState(postIdState);
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      collection(db, "posts",post.id,"likes"),
+      collection(db, "posts",id,"likes"),
       (snapshot) => setLikes(snapshot.docs)
     );
   }, [db]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      collection(db, "posts",post.id,"comments"),
+      collection(db, "posts",id,"comments"),
       (snapshot) => setComments(snapshot.docs)
     );
   }, [db]);
@@ -41,9 +42,9 @@ function Post({post,id}) {
   async function likePost(){
     if(session){
       if(hasLiked){
-        await deleteDoc(doc(db,"posts",post.id,"likes",session?.user.uid));
+        await deleteDoc(doc(db,"posts",id,"likes",session?.user.uid));
         }else{
-          await setDoc(doc(db,"posts",post.id, "likes",session?.user.uid),{
+          await setDoc(doc(db,"posts",id, "likes",session?.user.uid),{
             username: session.user.username,
           });
         }
@@ -57,11 +58,11 @@ function Post({post,id}) {
 
   async function deletePost() {
     if(window.confirm("Are you sure you want to delete the post?")){
-      deleteDoc(doc(db, "posts", post.id));
+      deleteDoc(doc(db, "posts", id));
       if(post.data().image){
-        deleteObject(ref(storage,`posts/${post.id}/image`));
+        deleteObject(ref(storage,`posts/${id}/image`));
       }
-
+        router.push("/");
     }
   }
 
@@ -102,7 +103,7 @@ function Post({post,id}) {
               if(!session){
                 signIn();
               }else{
-                setPostId(post.id)
+                setPostId(id)
                 setOpen(!open);
               }
               }} 
