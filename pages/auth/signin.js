@@ -2,11 +2,11 @@ import { db } from "../../firebase";
 import unitweet from '../../public/images/unitweet.png'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
-import { UseRouter } from "next/router";
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 
 function signin() {
-  const router = UseRouter();
+  const router = useRouter()
   const onGoogleClick = async () => {
     try {
       const auth = getAuth();
