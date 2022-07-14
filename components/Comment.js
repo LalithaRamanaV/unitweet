@@ -37,7 +37,7 @@ export default function Comment({ comment, commentId, originalPostId }) {
       collection(db, "posts", originalPostId, "comments", commentId, "likes"),
       (snapshot) => setLikes(snapshot.docs)
     );
-  }, [db, originalPostId, commentId]);
+  }, [ originalPostId, commentId]);
 
   useEffect(() => {
     setHasLiked(likes.findIndex((like) => like.id === currentUser?.uid) !== -1);
