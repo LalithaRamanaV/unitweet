@@ -40,14 +40,14 @@ function Post({post,id}) {
       collection(db, "posts",id,"likes"),
       (snapshot) => setLikes(snapshot.docs)
     );
-  }, [db]);
+  });
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection(db, "posts",id,"comments"),
       (snapshot) => setComments(snapshot.docs)
     );
-  }, [db]);
+  });
 
   useEffect(()=>{
    setHasLiked(likes.findIndex((like) => like.id === currentUser?.uid) !== -1);
