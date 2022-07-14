@@ -31,7 +31,7 @@ export default function CommentModal() {
     onSnapshot(doc(db, "posts", postId), (snapshot) => {
       setPost(snapshot);
     });
-  }, [postId, db]);
+  }, [postId]);
 
   async function sendComment() {
     await addDoc(collection(db, "posts", postId, "comments"), {
