@@ -1,17 +1,32 @@
-import { ChartBarIcon, ChatIcon, DotsHorizontalIcon, HeartIcon, ShareIcon, TrashIcon } from '@heroicons/react/outline'
-import { collection, deleteDoc, doc, onSnapshot, setDoc } from 'firebase/firestore'
-import React, { useEffect, useState } from 'react'
-import Moment from 'react-moment'
-import { db, storage } from '../firebase'
-import {HeartIcon as HeartIconFilled} from "@heroicons/react/solid"
-import {signIn, useSession} from "next-auth/react";
-import { deleteObject, ref } from 'firebase/storage';
-import { modalState, postIdState } from '../atom/modalAtom';
-import {useRecoilState} from "recoil";
-import {useRouter} from "next/router";
+import {
+  ChartBarIcon,
+  ChatIcon,
+  DotsHorizontalIcon,
+  HeartIcon,
+  ShareIcon,
+  TrashIcon,
+} from "@heroicons/react/outline";
+import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
+import Moment from "react-moment";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
+import { db, storage } from "../firebase";
+
+import { useState, useEffect } from "react";
+import { deleteObject, ref } from "firebase/storage";
+import { useRecoilState } from "recoil";
+import { modalState, postIdState } from "../atom/modalAtom";
+import { useRouter } from "next/router";
+import { userState } from "../atom/userAtom";
+
 
 function Post({post,id}) {
-  const {data:session} = useSession();
+  const [currentUser] = useRecoilState(userState);
   const [likes,setLikes] = useState([]);
   const [comments,setComments] = useState([]);
   const [hasLiked,setHasLiked] = useState(false);
@@ -34,22 +49,23 @@ function Post({post,id}) {
   }, [db]);
 
   useEffect(()=>{
-   setHasLiked(likes.findIndex((like) => like.id === session?.user.uid) !== -1);
-  }, [likes])
+   setHasLiked(likes.findIndex((like) => like.id === currentUser?.uid) !== -1);
+  }, [likes,currentUser])
 
   
 
   async function likePost(){
-    if(session){
+    if(currentUser){
       if(hasLiked){
-        await deleteDoc(doc(db,"posts",id,"likes",session?.user.uid));
+        await deleteDoc(doc(db,"posts",id,"likes",currentUser?.uid));
         }else{
-          await setDoc(doc(db,"posts",id, "likes",session?.user.uid),{
-            username: session.user.username,
+          await setDoc(doc(db,"posts",id, "likes",currentUser?.uid),{
+            username: currentUser?.username,
           });
         }
     }else{
-      signIn()
+      // signIn()
+      router.push("/auth/signin");
     }
   }
 
@@ -91,17 +107,18 @@ function Post({post,id}) {
             </div>
         
           {/* post text */}
-           <p className="text-gray-800 text-[15px] sm:text-[16px] mb-2">{post?.data()?.text}</p>
+           <p  onClick={() => router.push(`/posts/${id}`)} className="text-gray-800 text-[15px] sm:text-[16px] mb-2">{post?.data()?.text}</p>
           {/* post image */}
-          <img className="rounded-2xl mr-2"src={post?.data()?.image} alt=""/>
+          <img onClick={() => router.push(`/posts/${id}`)} className="rounded-2xl mr-2"src={post?.data()?.image} alt=""/>
           {/* icons */}
 
           <div className="flex justify-between text-gray-500 p-2">
             <div className="flex items-center select-none">
             <ChatIcon 
-            onClick={(commentPost)=>{
-              if(!session){
-                signIn();
+            onClick={()=>{
+              if(!currentUser){
+                // signIn();
+                router.push("/auth/signin");
               }else{
                 setPostId(id)
                 setOpen(!open);
@@ -117,12 +134,7 @@ function Post({post,id}) {
                }
               
               </div>
-          
-             
-            
-
-           
-            {session?.user.uid === post?.data()?.id && (
+            {currentUser?.uid === post?.data()?.id && (
             <TrashIcon onClick={deletePost}className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"/>
             )}
             
