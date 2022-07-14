@@ -1,8 +1,9 @@
+import { useRouter } from "next/router";
 import { db } from "../../firebase";
 import unitweet from '../../public/images/unitweet.png'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
-import { useRouter } from 'next/router'
+
 import Image from 'next/image'
 
 function signin() {

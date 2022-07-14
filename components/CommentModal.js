@@ -1,6 +1,7 @@
+import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atom/modalAtom";
-import { useRouter } from "next/router";
+
 import Modal from "react-modal";
 import {
   EmojiHappyIcon,
