@@ -2,6 +2,7 @@ import { SearchIcon } from "@heroicons/react/outline";
 import News from "./News";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Widgets({ newsResults, randomUsersResults }) {
   const [articleNum, setArticleNum] = useState(3);
@@ -56,7 +57,7 @@ export default function Widgets({ newsResults, randomUsersResults }) {
                 key={randomUser.login.username}
                 className="flex items-center px-4 py-2  cursor-pointer hover:bg-gray-200 transition duration-500 ease-out"
               >
-                <img
+                <Image
                   className="rounded-full"
                   width="40"
                   src={randomUser.picture.thumbnail}

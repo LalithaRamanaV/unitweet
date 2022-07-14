@@ -22,6 +22,7 @@ import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atom/modalAtom";
 import { useRouter } from "next/router";
 import { userState } from "../atom/userAtom";
+import Image from "next/image";
 
 export default function Comment({ comment, commentId, originalPostId }) {
   const [likes, setLikes] = useState([]);
@@ -87,7 +88,7 @@ export default function Comment({ comment, commentId, originalPostId }) {
   return (
     <div className="flex p-3 cursor-pointer border-b border-gray-200 pl-20">
       {/* user image */}
-      <img
+      <Image
         className="h-11 w-11 rounded-full mr-4"
         src={comment?.userImg}
         alt="user-img"

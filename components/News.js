@@ -1,3 +1,4 @@
+import Image from "next/image";
 
 export default function News({ article }) {
   return (
@@ -9,7 +10,7 @@ export default function News({ article }) {
             {article.source.name}
           </p>
         </div>
-        <img
+        <Image
           className="rounded-xl "
           width="70"
           src={article.urlToImage}

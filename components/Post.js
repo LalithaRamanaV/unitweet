@@ -23,6 +23,7 @@ import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atom/modalAtom";
 import { useRouter } from "next/router";
 import { userState } from "../atom/userAtom";
+import Image from "next/image";
 
 
 function Post({post,id}) {
@@ -85,7 +86,7 @@ function Post({post,id}) {
   return (
     <div className="flex p-3 cursor-pointer border-b border-gray-200">
         {/* user image */}
-        <img className="h-11 w-11 rounded-full mr-4"
+        <Image className="h-11 w-11 rounded-full mr-4"
         src={post?.data()?.userImg}
         alt="user-img"
       />
@@ -109,7 +110,7 @@ function Post({post,id}) {
           {/* post text */}
            <p  onClick={() => router.push(`/posts/${id}`)} className="text-gray-800 text-[15px] sm:text-[16px] mb-2">{post?.data()?.text}</p>
           {/* post image */}
-          <img onClick={() => router.push(`/posts/${id}`)} className="rounded-2xl mr-2"src={post?.data()?.image} alt=""/>
+          <Image onClick={() => router.push(`/posts/${id}`)} className="rounded-2xl mr-2"src={post?.data()?.image} alt=""/>
           {/* icons */}
 
           <div className="flex justify-between text-gray-500 p-2">

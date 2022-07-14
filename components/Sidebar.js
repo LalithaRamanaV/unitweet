@@ -41,7 +41,7 @@ export default function Sidebar() {
           fetchUser();
         }
       });
-    }, []);
+    });
   
     function onSignOut() {
       signOut(auth);
@@ -76,7 +76,7 @@ export default function Sidebar() {
         </button>
         {/* mini profile */}
         <div className="hoverEffect text-gray-700 flex items-center justify-center xl:justify-start mt-auto">
-        <img 
+        <Image 
         onClick={onSignOut}
         className="h-10 w-10 rounded-full xl:mr-2" src={currentUser?.userImg} alt="user-img"/>
         <div className="leading-5 hidden xl:inline">

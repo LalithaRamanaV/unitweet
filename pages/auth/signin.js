@@ -2,11 +2,11 @@ import { db } from "../../firebase";
 import unitweet from '../../public/images/unitweet.png'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
-import { useRouter } from "next/router";
+import { UseRouter } from "next/router";
 import Image from 'next/image'
 
 function signin() {
-  const router = useRouter();
+  const router = UseRouter();
   const onGoogleClick = async () => {
     try {
       const auth = getAuth();
@@ -32,7 +32,7 @@ function signin() {
   };
   return (
     <div className="flex justify-center mt-20 space-x-6">
-      <img className="hidden object-cover md:w-60 md:h-90 md:inline-flex" src="https://melissataub.com/wp-content/uploads/2019/07/Twitter-Mockup-crop2.png" alt="logo"/>
+      <Image className="hidden object-cover md:w-60 md:h-90 md:inline-flex" src="https://melissataub.com/wp-content/uploads/2019/07/Twitter-Mockup-crop2.png" alt="logo"/>
       <div className="">
      
           <div className="flex flex-col items-center">
