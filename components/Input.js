@@ -17,6 +17,7 @@ import { db, storage } from "../firebase";
 import { useRecoilState } from "recoil";
 import { userState } from "../atom/userAtom";
 import { signOut, getAuth } from "firebase/auth";
+import Image from "next/image";
 
 export default function Input() {
   
@@ -74,7 +75,7 @@ export default function Input() {
     <>
     {currentUser&& (
     <div className="flex border-b border-gray-200 p-3 space-x-3">
-        <img
+        <Image
         onClick={onSignOut}
         src={currentUser?.userImg}   
          className="h-11 w-11 rounded-full cursor-pointer hover:brightness-95" 
@@ -93,7 +94,8 @@ export default function Input() {
             {selectedFile && (
               <div className="relative">
                 <XIcon onClick={()=>setSelectedFile(null)} className="border h-7 text-black absolute cursor-pointer shadow-md border-white m-1 rounded-full"/>
-                <img 
+                <Image 
+                alt=""
                 src={selectedFile} 
                 className={`${loading && "animate-pulse"}`}
                 />
